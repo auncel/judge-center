@@ -11,5 +11,5 @@
  *-------------------------------------------------------------------------- */
 
 const isLocal = process.env.NODE_ENV !== 'production';
-export const MICRO_SERVICE_TCP_HOST: string = isLocal ? '127.0.0.1' : '101.37.29.47';
-export const MICRO_SERVICE_TCP_PORT: number = isLocal ? 6301 : 6301;
+export const MICRO_SERVICE_TCP_HOST: string = isLocal ? '127.0.0.1' : '49.234.72.82';;
+export const MICRO_SERVICE_TCP_PORT: number = isLocal ? 6302 : 6302;
