@@ -41,10 +41,10 @@
   dependencies:
     winston "^3.2.1"
 
-"@auncel/diff-dom-core@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.npm.taobao.org/@auncel/diff-dom-core/download/@auncel/diff-dom-core-0.2.0.tgz#faea33ab57e0aba407b08358b26f5605741606d6"
-  integrity sha1-+uozq1fgq6QHsINYsm9WBXQWBtY=
+"@auncel/diff-dom-core@0.2.1":
+  version "0.2.1"
+  resolved "https://registry.npm.taobao.org/@auncel/diff-dom-core/download/@auncel/diff-dom-core-0.2.1.tgz?cache=0&sync_timestamp=1587782385267&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40auncel%2Fdiff-dom-core%2Fdownload%2F%40auncel%2Fdiff-dom-core-0.2.1.tgz#34504b5c3e701805878ed46d794e7d0413a89226"
+  integrity sha1-NFBLXD5wGAWHjtRteU59BBOokiY=
   dependencies:
     "@auncel/common" "^0.0.1-alpha.4"
     "@dovyih/x-tree-diff-plus" "0.1.0"
