@@ -1,11 +1,21 @@
 import { NestFactory } from '@nestjs/core';
+import { Request } from 'express';
+import timeout from 'connect-timeout';
+import debug from 'debug';
 import { AppModule } from './app.module';
-import { Transport } from '@nestjs/common/enums/transport.enum';
-import { MICRO_SERVICE_TCP_HOST, MICRO_SERVICE_TCP_PORT } from './config/index'
+
+const log = debug('auncel:judge:main');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3300, () => console.log('[micro service][judge center]: starting!'));
+  app.use(timeout('60s'));
+  app.use((req: Request, res: Response, next: () => void) => {
+    log('halt on timedout');
+    if (!(req as any).timedout){
+      next();
+    }
+  });
+  await app.listen(3300, () => console.log('[judge center]: starting!'));
 }
 
 bootstrap();
