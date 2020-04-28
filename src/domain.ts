@@ -18,7 +18,7 @@
 
 /* eslint-disable */
 
-// Generated using typescript-generator version 2.9.456 on 2020-04-27 19:15:46.
+// Generated using typescript-generator version 2.9.456 on 2020-04-28 19:44:38.
 
 export interface User extends BaseEntity {
   username: string;
@@ -103,6 +103,7 @@ export interface Submission extends BaseEntity {
   style: string;
   status: SubmissionStatus;
   score: number;
+  renderTree: string;
   logs: string;
   screenshot: string;
   submiter: User;
@@ -132,7 +133,9 @@ export interface SubmissionDto extends Serializable {
   score: number;
   logs: string;
   screenshot: string;
+  renderTree: string;
   problem: ProblemDto;
+  submiter: UserDto;
   createdAt: Date;
   updatedAt: Date;
 }
