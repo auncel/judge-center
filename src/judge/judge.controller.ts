@@ -15,6 +15,9 @@ import { Controller, Post, Body, OnModuleInit, OnModuleDestroy, Inject } from '@
 import { diffDomCore, getRenderTree, IDiffResult, Puppeteer } from '@auncel/diff-dom-core/dist/index.pptr';
 import { createHTMLTpl } from '@auncel/diff-dom-core/dist/utils';
 import { exec, execSync}  from 'child_process';
+import {
+  performance,
+}  from 'perf_hooks';
 import { IReponseResult } from '../ReponseResult.interface';
 import { API_HOST, VALIDATE_ERROR, PASS_LINE } from './constant';
 import { SubmissionDto, SubmissionStatus } from '../domain';
@@ -58,46 +61,51 @@ interface IJudgeSubmission {
   style: string;
 }
 
+
 @Controller('judge')
 export class JudgeController implements OnModuleInit, OnModuleDestroy {
 
   @Inject()
   judgeSerice: JudgeService;
 
-  @Post("/")
+  @Post("/submit")
   public async judge(
     @Body() judgeData: IJudgeSubmission,
-  ): Promise<IJudgeResult> {
-    const { problemId, html, style} = judgeData;
-    const submissionData = await createSubmission(judgeData);
+    ): Promise<IJudgeResult> {
+      const { problemId, html, style} = judgeData;
+      const submissionData = await createSubmission(judgeData);
 
-    const htmlTpl = createHTMLTpl(html, style)
-    const res = this.judgeSerice.validate(htmlTpl);
-    if (!res.valid) {
-      submissionData.status = SubmissionStatus.SYNTAX_ERROR;
+      const htmlTpl = createHTMLTpl(html, style)
+      const res = this.judgeSerice.validate(htmlTpl);
+      if (!res.valid) {
+        submissionData.status = SubmissionStatus.SYNTAX_ERROR;
       submissionData.logs = res.results;
       await updateSubmission(submissionData);
-      return { success: false, code: VALIDATE_ERROR, msg: '语法校验失败' };
+      return { success: false, code: VALIDATE_ERROR, msg: '存在语法，请检查后重新提交！' };
     }
     
     const question = await this.judgeSerice.getQuestionTree(problemId, html, style);
+    
+    const judgeStart = performance.now();
+
     const answer = await getRenderTree({ html, style })
     
     submissionData.renderTree = JSON.stringify(answer);
     log('update sumission renderTree %s', submissionData.renderTree);
     await updateSubmission(submissionData);
 
-      console.time('diffDomCore');
     const diffRes = await diffDomCore(question, answer)
-      console.timeEnd('diffDomCore');
+
+    const judgeEnd = performance.now();
 
     submissionData.score = diffRes.score;
     submissionData.status = diffRes.score > PASS_LINE ? SubmissionStatus.ACCEPT : SubmissionStatus.WRONG_ANWSER;
     submissionData.logs = JSON.stringify(diffRes.logs);
+    submissionData.exeTime = judgeEnd - judgeStart;
     log('submission data after diff %o', submissionData);
     await updateSubmission(submissionData);
 
-    return { success: true, code: 0, msg: "判题结果", data: diffRes};
+    return { success: true, code: 0, msg: `判题成功， 得分：${diffRes.score}分`, data: diffRes};
   }
 
   async onModuleInit() {
