@@ -9,7 +9,7 @@ const log = debug('auncel:judge:main');
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: ['api.auncel.top', 'www.auncel.top'],
+    origin: ['http://api.auncel.top', 'http://www.auncel.top'],
     methods: "ALL",
     credentials: true,
   });
