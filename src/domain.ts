@@ -14,11 +14,15 @@
  * @see https://ncjamieson.com/dont-export-const-enums/
  * @see https://github.com/microsoft/fluentui/issues/7110
  * @see https://github.com/facebook/create-react-app/issues/5681
+ * @see https://github.com/wmonk/create-react-app-typescript/issues/400
+ * @see https://github.com/microsoft/TypeScript/issues/11202
+ * @see https://github.com/microsoft/TypeScript/issues/10879#issuecomment-248077719
+ * @see https://babeljs.io/docs/en/babel-plugin-transform-typescript#caveats
  */
 
 /* eslint-disable */
 
-// Generated using typescript-generator version 2.9.456 on 2020-04-28 19:44:38.
+// Generated using typescript-generator version 2.9.456 on 2020-04-29 11:25:09.
 
 export interface User extends BaseEntity {
   username: string;
@@ -106,6 +110,7 @@ export interface Submission extends BaseEntity {
   renderTree: string;
   logs: string;
   screenshot: string;
+  exeTime: number;
   submiter: User;
 }
 
@@ -134,6 +139,7 @@ export interface SubmissionDto extends Serializable {
   logs: string;
   screenshot: string;
   renderTree: string;
+  exeTime: number;
   problem: ProblemDto;
   submiter: UserDto;
   createdAt: Date;
